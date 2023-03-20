@@ -5,7 +5,7 @@ N=$1
 
 if [ $# = 0 ]
 then
-	echo "Please specify the node number of hadoop cluster!"
+	echo "Please specify the node number of hadoop cluster, including master!"
 	exit 1
 fi
 
