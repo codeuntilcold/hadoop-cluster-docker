@@ -15,16 +15,19 @@ MAP1:   [D_i]   -->     [term_k, URL_i@W_i]
         emit term_k, URL_i@W_i
 """
 
-def read_input(file):
-
+def transform(content):
     # lowercase
-    file = file.read().lower()
+    content = content.lower()
     # remove punctualtions
-    file = re.sub(r'[^\w\s]', '', file)
+    content = re.sub(r'[^\w\s]', '', content)
     # remove stop words
 
     # lemmatization
+    return content
 
+def read_input(file):
+    file = file.read()
+    file = transform(file)
     for line in file.split('\n'):
         yield line
 
@@ -32,12 +35,15 @@ def main(separator='\t'):
     # input comes from STDIN (standard input)
     data = read_input(sys.stdin)
     file_url = os.getenv('mapreduce_map_input_file')
-    print("Processing %s file" % (file_url))
     words = set()
     for line in data:
         for word in line.split():
             words.add(word)
 
+    raw_query = os.getenv('q_from_user')
+    query = set(transform(raw_query if raw_query else '').split())
+    if not query.issubset(words):
+        return
     for word in words:
         print('%s\t%s@%d' % (word, file_url if file_url else "insert_random_file_name_pls", len(words)))
 
