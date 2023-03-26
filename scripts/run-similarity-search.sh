@@ -10,6 +10,8 @@ echo "The quick, brown fox jumps over the lazy dog." > input/file2.txt
 echo "The cat is very good at jumping" > input/file3.txt
 echo "Document needs to be interesting, but writer is lazy" > input/file4.txt
 
+echo $query > input/query.txt
+
 # count total map tasks
 echo "Total map is $(ls input | wc -l)"
 

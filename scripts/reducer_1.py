@@ -18,7 +18,7 @@ def read_mapper_output(file, separator='\t'):
     for line in file:
         yield line.rstrip().split(separator, 1)
 
-def main(separator='\t'):
+def main(separator='\t', second_sep='@'):
     data = read_mapper_output(sys.stdin, separator=separator)
     total_map = os.getenv('total_map_tasks')
     try:
@@ -26,13 +26,14 @@ def main(separator='\t'):
     except:
         total_map = 0
     for current_word, group in groupby(data, itemgetter(0)):
-        uacs = [url_and_count for _, url_and_count in group]
+        uacs = [uc for _, uc in group]
+        uacs = [(url, int(count)) for url, count in read_mapper_output(uacs, second_sep)]
+        # lonely word or common word
         if len(uacs) == 1 or len(uacs) == total_map:
-            # lonely word or common word
             continue
-        sorted_uacs = sorted(read_mapper_output(uacs, '@'), key=itemgetter(1))
-        sorted_uacs_formatted = ['@'.join(uac) for uac in sorted_uacs]
-        print("%s\t%s" % (current_word, separator.join(sorted_uacs_formatted)))
+        sorted_uacs = ["{}{}{}".format(url, second_sep, count) \
+                       for url, count in sorted(uacs, key=itemgetter(1), reverse=True)]
+        print("{}{}{}".format(current_word, separator, separator.join(sorted_uacs)))
 
 if __name__ == "__main__":
     main()

@@ -27,25 +27,25 @@ def transform(content):
 
 def read_input(file):
     file = file.read()
-    file = transform(file)
     for line in file.split('\n'):
-        yield line
+        yield transform(line)
 
-def main(separator='\t'):
+def main(separator='\t', second_sep='@'):
     # input comes from STDIN (standard input)
     data = read_input(sys.stdin)
     file_url = os.getenv('mapreduce_map_input_file')
+    file_url = file_url if file_url else "random_filename"
+    if '/' in file_url:
+        file_url = '/'.join(file_url.split('/')[-1])
     words = set()
     for line in data:
-        for word in line.split():
-            words.add(word)
-
+        words.update(line.split())
     raw_query = os.getenv('q_from_user')
-    query = set(transform(raw_query if raw_query else '').split())
-    if not query.issubset(words):
-        return
-    for word in words:
-        print('%s\t%s@%d' % (word, file_url if file_url else "insert_random_file_name_pls", len(words)))
+    query_words = set(transform(raw_query if raw_query else '').split())
+    intersection = words.intersection(query_words)
+
+    for word in intersection:
+        print('{}{}{}{}{}'.format(word, separator, file_url, second_sep, len(words)))
 
 if __name__ == "__main__":
     main()
