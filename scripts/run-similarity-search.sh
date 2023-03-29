@@ -22,8 +22,9 @@ echo "Total map is $total_map"
 echo "Results will be output to $output_phase1_dir, $output_phase2_dir"
 
 # copy data to hdfs
-hadoop fs -mkdir -p input 2> /dev/null
-hdfs dfs -put ./input/* input 2> /dev/null
+hdfs dfs -mkdir -p input
+hdfs dfs -rm input/query.txt
+hdfs dfs -put input/* input
 
 # run phase 1
 hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-2.7.2.jar \
