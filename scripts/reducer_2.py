@@ -10,7 +10,7 @@ Input:
 Output:
 - Final similarity scores [URL_i@URL_j@, SIM(D_i, D_j)]
 
-High level of what the first mapper will do:
+High level of what the second reducer will do:
 REDUCE-2: for each pair, group when group by pair:
             for each pair, value in group:
                 val = val + value

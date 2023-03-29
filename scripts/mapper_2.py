@@ -7,7 +7,7 @@ Input:
 Output:
 - A list of candidate pairs [URL_ij@W_i@W_j, 1]  
 
-High level of what the first mapper will do:
+High level of what the second mapper will do:
 MAP-2:  for each term, elements in input_data:
             get the information of given query object, 
             and derive its URLs, total term
@@ -25,7 +25,7 @@ def read_input(file, separator='\t'):
 def get_query_object(doc_list):
     for doc in doc_list:
         url, w = doc.split('@')
-        if url == 'D3': # query.txt
+        if url == 'query.txt': # query.txt
             return url, w
     
     return None, None
