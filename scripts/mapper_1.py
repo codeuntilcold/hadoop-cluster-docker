@@ -36,16 +36,18 @@ def main(separator='\t', second_sep='@'):
     file_url = os.getenv('mapreduce_map_input_file')
     file_url = file_url if file_url else "random_filename"
     if '/' in file_url:
-        file_url = '/'.join(file_url.split('/')[-1])
-    words = set()
+        # take the name of the document as the url -- doc1.txt, doc2.txt, query.txt,...
+        file_url = file_url.split('/')[-1]
+
+    document_words = set()
     for line in data:
-        words.update(line.split())
+        document_words.update(line.split())
     raw_query = os.getenv('q_from_user')
     query_words = set(transform(raw_query if raw_query else '').split())
-    intersection = words.intersection(query_words)
+    intersection = document_words.intersection(query_words)
 
     for word in intersection:
-        print('{}{}{}{}{}'.format(word, separator, file_url, second_sep, len(words)))
+        print('{}{}{}{}{}'.format(word, separator, file_url, second_sep, len(document_words)))
 
 if __name__ == "__main__":
     main()
