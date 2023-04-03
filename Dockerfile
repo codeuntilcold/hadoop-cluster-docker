@@ -44,6 +44,8 @@ RUN chmod +x ~/start-hadoop.sh && \
     chmod +x $HADOOP_HOME/sbin/start-yarn.sh 
 
 COPY scripts/* .
+RUN chmod +x ~/build-inverted-index.sh
+RUN chmod +x ~/jpii-run-similarity-search.sh
 # RUN find . -type f -exec chmod +x {} \;
 
 # format namenode
